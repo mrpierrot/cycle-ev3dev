@@ -2,9 +2,10 @@ const { assert } = require('chai'),
     xs = require('xstream').default,
     { run } = require('@cycle/run'),
     { adapt } = require('@cycle/run/lib/adapt'),
-    { motorsList, getMotor } = require('../src/motors'),
+    driver = require('./driver'),
     { MOTOR_3,SPEED_SP,CMD_RUN_FOREVER,COMMAND,CMD_STOP } = require('../src/constants');
 
+/*
 describe('cycle-ev3dev:motors', function () {
     this.timeout(15000);
 
@@ -23,4 +24,4 @@ describe('cycle-ev3dev:motors', function () {
             done();
         },3000)
     });
-});
+});*/
