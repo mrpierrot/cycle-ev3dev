@@ -6,10 +6,9 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "ssh": "ssh robot@ev3dev.local",
-    "sync": "rsync -av --partial --progress --rsh=ssh --exclude \".git\" . robot@ev3dev.local:~/cycle-ev3dev",
-    "sync:build": "cd webapp && npm run build && cd .. && npm run sync",
-    "watch":"./bin/sync.sh . robot@ev3dev.local cycle-ev3dev",
-    "ssh-end":"ssh -O exit -o ControlPath=\"$HOME/.ssh/ctl/%L-%r@%h:%p\" robot@ev3dev.local"
+    "sync": "./bin/sync.sh once . robot@ev3dev.local cycle-ev3dev",
+    "watch":"./bin/sync.sh watch . robot@ev3dev.local cycle-ev3dev",
+    "ssh-close":"./bin/sync.sh close robot@ev3dev.local"
   }, 
   "repository": {
     "type": "git", 
