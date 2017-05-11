@@ -7,11 +7,11 @@
     "test": "./node_modules/mocha/bin/mocha",
     "ssh": "ssh robot@ev3dev.local",
     "sync": "./bin/sync.sh once . robot@ev3dev.local cycle-ev3dev",
-    "watch":"./bin/sync.sh watch . robot@ev3dev.local cycle-ev3dev",
-    "ssh-close":"./bin/sync.sh close robot@ev3dev.local"
-  }, 
+    "watch": "./bin/sync.sh watch . robot@ev3dev.local cycle-ev3dev",
+    "ssh-close": "./bin/sync.sh close robot@ev3dev.local"
+  },
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "git+https://github.com/mrpierrot/cycle-ev3dev.git"
   },
   "keywords": [
@@ -29,10 +29,11 @@
   "homepage": "https://github.com/mrpierrot/cycle-ev3dev#readme",
   "dependencies": {
     "@cycle/run": "^3.0.0",
-    "xstream": "^10.7.0"
+    "xstream": "^10.7.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.3.0" 
+    "mocha": "^3.3.0"
   }
 }

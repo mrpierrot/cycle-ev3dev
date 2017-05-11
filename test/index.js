@@ -5,7 +5,7 @@ const { assert } = require('chai'),
     { makeEv3devDriver } = require('../src/index');
 
 describe('cycle-ev3dev', function () {
-    it('connect/disconnect', function (done) {
+    it('', function (done) {
       done()
     });
 });
