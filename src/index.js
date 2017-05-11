@@ -6,13 +6,29 @@ exports.makeEv3devDriver =  function makeEv3devDriver() {
     return function ev3devDriver(events$) {
         events$.addListener({
             next: outgoing => {
-                _.each(outgoing.motors,(attrs,motor) => {
-                    const path = driver.getMotorPath(motor);
-                    driver.writeList(path,attrs);
-                });
+                _.each(outgoing,(list,type) => 
+                    _.each(list,(attrs,name) => {
+                        const path = driver.getDriverPath(type,name);
+                        driver.writeList(path,attrs);
+                    })
+                );
             },
             error: () => { },
             complete: () => { },
         });
+
+        return {
+            getDriver(type,name){
+                const path = driver.getDriverPath(type,name);
+                return {
+                    watch(attribute){
+                        return driver.watch(path,attribute);
+                    },
+                    read(attribute){
+                        return driver.read(path,attribute);
+                    }
+                }
+            }
+        }
     }
 }

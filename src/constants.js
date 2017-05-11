@@ -22,7 +22,9 @@ exports.STOP_ACTION_COAST   =   "coast";
 exports.STOP_ACTION_BRAKE   =   "brake";
 exports.STOP_ACTION_HOLD    =   "hold";
 
+exports.POSITION            =   "position";
 exports.POSITION_SP         =   "position_sp";
+exports.SPEED               =   "speed";
 exports.SPEED_SP            =   "speed_sp";
 exports.MAX_SPEED           =   "max_speed";
 exports.TIME_SP             =   "time_sp";

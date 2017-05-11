@@ -3,7 +3,7 @@ const { assert } = require('chai'),
     { run } = require('@cycle/run'),
     { adapt } = require('@cycle/run/lib/adapt'),
     { makeEv3devDriver } = require('../src/index'),
-    { MOTOR_3, SPEED_SP, CMD_RUN_FOREVER, COMMAND, CMD_STOP } = require('../src/constants'),
+    { TACHO_MOTOR, MOTOR_3, SPEED_SP, CMD_RUN_FOREVER, COMMAND, CMD_STOP, POSITION } = require('../src/constants'),
     { fakeReadDriver } = require('./test-utils');
 
 
@@ -13,10 +13,11 @@ describe('cycle-ev3dev', function () {
         // server part
 
         function main(sources) {
+            const  { ev3dev } = sources;
 
             const action$ = xs.merge(
                 xs.of({
-                    motors: {
+                    [TACHO_MOTOR]: {
                         [MOTOR_3]: [
                             { attr: SPEED_SP, value: 500 },
                             { attr: COMMAND, value: CMD_RUN_FOREVER }
@@ -25,7 +26,7 @@ describe('cycle-ev3dev', function () {
                 }),
                 xs.periodic(1000)
                     .mapTo({
-                        motors: {
+                        [TACHO_MOTOR]: {
                             [MOTOR_3]: [
                                 { attr: COMMAND, value: CMD_STOP }
                             ]
@@ -34,20 +35,22 @@ describe('cycle-ev3dev', function () {
                     .endWhen(xs.periodic(1100).take(1))
             );
 
+            const watch$ = ev3dev.getDriver(TACHO_MOTOR,MOTOR_3).watch(POSITION);
+
             const events$  = xs.periodic(1000).endWhen(xs.periodic(1100).take(1));
 
             const sinks = {
                 ev3dev: action$,
-                fake: events$
+                fake: watch$
             };
             return sinks;
         }
 
         const drivers = {
             ev3dev: makeEv3devDriver(),
-            fake: fakeReadDriver((o, i) => {
-
-            }, done, 1)
+            fake: fakeReadDriver((o, i, complete) => {
+                console.log(o)
+            }, done,3)
         };
         run(main, drivers);
     });

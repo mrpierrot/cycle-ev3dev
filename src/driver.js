@@ -3,16 +3,21 @@ const _ = require('lodash');
 const xs = require('xstream').default;
 const { DRIVERS_PATH, TACHO_MOTOR } = require('./constants');
 
-function createWatchProducer(target) {
+function createWatchProducer(target,interval) {
     let _listener = null;
+    let intervalId = null;
     return {
         start(listener) {
-            if (_listener) this.stop();
-            _listener = (data) => listener.next(_.trim(data));
-            fs.watch(target, { encoding: 'utf8' }, _listener);
+            let oldValue = null;
+            intervalId = setInterval(() => {
+                const value = _.trim(fs.readFileSync(target, { encoding: 'utf8' }));
+                if(value != oldValue){
+                    return listener.next(_.trim(value));
+                }
+            },interval);
         },
         stop() {
-            fs.unwatchFile(target, _listener);
+            clearInterval(intervalId);
         }
     }
 }
@@ -31,12 +36,12 @@ exports.read = function read(path,attribute) {
     return xs.of(_.trim(fs.readFileSync(path + '/' + attribute, { encoding: 'utf8' })))
 };
 
-exports.watch = function watch(path,attribute) {
-    return xs.create(createWatchProducer(path + '/' + attribute));
+exports.watch = function watch(path,attribute,interval=500) {
+    return xs.create(createWatchProducer(path + '/' + attribute,interval));
 };
 
-exports.getMotorPath = function getMotorPath(motorName, type = TACHO_MOTOR){
-    return DRIVERS_PATH + '/' + type + '/' + motorName;
+exports.getDriverPath = function getDriverPath(type,driverName){
+    return DRIVERS_PATH + '/' + type + '/' + driverName;
 }
 
 exports.motorsList = function motorsList(type = TACHO_MOTOR) {
