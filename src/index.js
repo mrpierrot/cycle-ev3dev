@@ -21,8 +21,8 @@ exports.makeEv3devDriver =  function makeEv3devDriver() {
             getDriver(type,name){
                 const path = driver.getDriverPath(type,name);
                 return {
-                    watch(attribute){
-                        return driver.watch(path,attribute);
+                    watch(attribute,interval=500){
+                        return driver.watch(path,attribute,interval);
                     },
                     read(attribute){
                         return driver.read(path,attribute);
