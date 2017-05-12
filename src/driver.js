@@ -10,9 +10,13 @@ function createWatchProducer(target,interval) {
         start(listener) {
             let oldValue = null;
             intervalId = setInterval(() => {
-                const value = _.trim(fs.readFileSync(target, { encoding: 'utf8' }));
-                if(value != oldValue){
-                    return listener.next(_.trim(value));
+                try {
+                    const value = _.trim(fs.readFileSync(target, { encoding: 'utf8' }));
+                    if(value != oldValue){
+                        return listener.next(_.trim(value));
+                    }
+                }catch(e) {
+                    listener.error(e);
                 }
             },interval);
         },
@@ -33,7 +37,11 @@ exports.writeList = function writeList(path,list) {
 };
 
 exports.read = function read(path,attribute) {
-    return xs.of(_.trim(fs.readFileSync(path + '/' + attribute, { encoding: 'utf8' })))
+    try {
+        return xs.of(_.trim(fs.readFileSync(path + '/' + attribute, { encoding: 'utf8' })))
+    }catch(e) {
+        return xs.throw(e);
+    }
 };
 
 exports.watch = function watch(path,attribute,interval=500) {

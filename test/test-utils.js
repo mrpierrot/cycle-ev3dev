@@ -3,7 +3,7 @@ const _ = require('lodash'),
     { run } = require('@cycle/run'),
     { adapt } = require('@cycle/run/lib/adapt');
 
-exports.fakeReadDriver = function makeFakeReadDriver(callback, done, count = -1) {
+exports.makeFakeDriver = function makeFakeDriver(callback, done, count = -1) {
     return function fakeReadDriver(events$) {
         let i = 0;
         const obj = {
@@ -11,7 +11,7 @@ exports.fakeReadDriver = function makeFakeReadDriver(callback, done, count = -1)
                 callback(outgoing, i++,complete);
                 if(finish)finish();
             },
-            error: () => { },
+            error: (e) => { console.warn('fakeDriver::error',e.message) },
             complete: () => { },
         }
 
