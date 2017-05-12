@@ -1,6 +1,6 @@
 {
   "name": "cycle-ev3dev",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A cycle driver for ev3dev lego system",
   "main": "src/index.js",
   "scripts": {
